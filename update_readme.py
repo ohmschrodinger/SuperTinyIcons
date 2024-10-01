@@ -29,7 +29,11 @@ for svg_file in svg_list:
 	svg = svg_file.split('.')[0]
 	svg_data[svg] = { 'svg_file' : svg_file }
 	#	Get the name of the service from the ARIA label
-	svg_data[svg]['name'] = ET.parse(f'{svg_dir}{svg_file}').getroot().attrib["aria-label"]
+	# svg_data[svg]['name'] = ET.parse(f'{svg_dir}{svg_file}').getroot().attrib["aria-label"]
+	# Get the name of the service from the ARIA label, if it exists
+	root = ET.parse(f'{svg_dir}{svg_file}').getroot()
+	svg_data[svg]['name'] = root.attrib.get("aria-label", svg)  # Use the file name as fallback
+
 	#	Get the file size
 	bytes = os.stat(f'{svg_dir}{svg_file}').st_size
 	svg_data[svg]['bytes'] = bytes
